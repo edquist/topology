@@ -21,7 +21,7 @@ def main(args):
         if looks_like_downtime(fname):
             DTs += [fname]
         else:
-            errors += ["File '%s' is not a downtime file." % fname]
+            errors += ["File '%s' is not a downtime file." % fname.decode()]
 
     for fname in DTs:
         dtdict_base = get_downtime_dict_at_version(BASE_SHA, fname)
@@ -43,14 +43,14 @@ def looks_like_sha(arg):
     return re.search(r'^[0-9a-f]{40}$', arg)  # is not None
 
 def looks_like_downtime(fname):
-    return re.search(r'^topology/[^/]+/[^/]+/[^/]+_downtime.yaml$', fname)
+    return re.search(br'^topology/[^/]+/[^/]+/[^/]+_downtime.yaml$', fname)
 
 def get_modified_files(sha_a, sha_b):
     args = ['git', 'diff', '-z', '--name-only', sha_a, sha_b]
     ret, out = runcmd(args)
     if ret:
         sys.exit(1)
-    return ret.rstrip('\0').split('\0')
+    return out.rstrip(b'\0').split(b'\0')
 
 def runcmd(cmdline, **popen_kw):
     from subprocess import Popen, PIPE
