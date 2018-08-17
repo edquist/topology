@@ -62,7 +62,7 @@ def print_errors(errors):
     if errors:
         print("Commit is not eligible for auto-merge:")
         for e in errors:
-            print(e)
+            print(" - %s" % e)
     else:
         print("Commit is eligible for auto-merge.")
 
