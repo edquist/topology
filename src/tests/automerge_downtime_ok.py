@@ -82,7 +82,7 @@ def diff_dtdict(dtdict_a, dtdict_b):
         return dtdict_a[ID] != dtdict_b[ID]
     dtids_a = set(dtdict_a)
     dtids_b = set(dtdict_b)
-    dtids_mod = filter(dt_changed, dtids_a & dtids_b)
+    dtids_mod = set(filter(dt_changed, dtids_a & dtids_b))
     dt_a = [ dtdict_a[ID] for ID in (dtids_a - dtids_b) | dtids_mod ]
     dt_b = [ dtdict_b[ID] for ID in (dtids_b - dtids_a) | dtids_mod ]
 
