@@ -30,7 +30,7 @@ def main(args):
         dtminus, dtplus = diff_dtdict(dtdict_base, dtdict_new)
         for dt in dtminus:
             print("Old Downtime %d modified: %s" % (dt["ID"], dt))
-        for dt in dtminus:
+        for dt in dtplus:
             print("New Downtime %d modified: %s" % (dt["ID"], dt))
 
     print_errors(errors)
