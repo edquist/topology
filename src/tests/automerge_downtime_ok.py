@@ -69,7 +69,7 @@ def print_errors(errors):
 
 _devnull = open("/dev/null", "w")
 def get_file_at_version(sha, fname):
-    args = ['git', 'show', '%s:%s' % (sha, fname)]
+    args = ['git', 'show', b'%s:%s' % (sha.encode(), fname)]
     ret, out = runcmd(args, stderr=_devnull)
     return out
 
