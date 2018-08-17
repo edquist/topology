@@ -52,9 +52,9 @@ def get_modified_files(sha_a, sha_b):
         sys.exit(1)
     return ret.rstrip('\0').split('\0')
 
-def runcmd(cmdline, stderr=None):
+def runcmd(cmdline, **popen_kw):
     from subprocess import Popen, PIPE
-    p = Popen(cmdline, stdout=PIPE, stderr=stderr)
+    p = Popen(cmdline, stdout=PIPE, **popen_kw)
     out, err = p.communicate()
     return p.returncode, out
 
