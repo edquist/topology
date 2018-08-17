@@ -35,6 +35,13 @@ def main(args):
             print("New Downtime %d modified for resource '%s'" %
                   (dt["ID"], dt["ResourceName"]))
 
+        resources_affected = set( dt["ResourceName"] for dt in dtminus ) \
+                           | set( dt["ResourceName"] for dt in dtplus  )
+
+        if resources_affected:
+            rg_fname = re.sub(br'_downtime.yaml$', b'.yaml', fname)
+            check_resource_contacts(rg_fname, resources_affected)
+
     print_errors(errors)
     sys.exit(len(errors) > 0)
 
@@ -90,6 +97,9 @@ def diff_dtdict(dtdict_a, dtdict_b):
     dt_b = [ dtdict_b[ID] for ID in (dtids_b - dtids_a) | dtids_mod ]
 
     return dt_a, dt_b
+
+def check_resource_contacts(rg_fname, resources_affected): #, gh_user
+    pass
 
 if __name__ == '__main__':
     main(sys.argv[1:])
