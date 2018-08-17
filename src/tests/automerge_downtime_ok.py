@@ -29,9 +29,11 @@ def main(args):
         dtdict_new  = get_downtime_dict_at_version(MERGE_COMMIT_SHA, fname)
         dtminus, dtplus = diff_dtdict(dtdict_base, dtdict_new)
         for dt in dtminus:
-            print("Old Downtime %d modified: %s" % (dt["ID"], dt))
+            print("Old Downtime %d modified for resource '%s'" %
+                  (dt["ID"], dt["ResourceName"]))
         for dt in dtplus:
-            print("New Downtime %d modified: %s" % (dt["ID"], dt))
+            print("New Downtime %d modified for resource '%s'" %
+                  (dt["ID"], dt["ResourceName"]))
 
     print_errors(errors)
     sys.exit(len(errors) > 0)
