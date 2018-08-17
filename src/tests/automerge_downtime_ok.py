@@ -66,9 +66,10 @@ def print_errors(errors):
     else:
         print("Commit is eligible for auto-merge.")
 
+_devnull = open("/dev/null", "w")
 def get_file_at_version(sha, fname):
     args = ['git', 'show', '%s:%s' % (sha, fname)]
-    ret, out = runcmd(args, open("/dev/null", "w"))
+    ret, out = runcmd(args, stderr=_devnull)
     return out
 
 def get_downtime_dict_at_version(sha, fname):
