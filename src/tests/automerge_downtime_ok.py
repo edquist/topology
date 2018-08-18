@@ -1,10 +1,19 @@
 #!/usr/bin/env python
 
+import collections
 import subprocess
 import yaml
 import sys
 import os
 import re
+
+try:
+    from urllib.request import urlopen
+except ImportError:
+    from urllib2 import urlopen
+
+import xml.etree.ElementTree as et
+
 
 def usage():
     print("Usage: %s BASE_SHA MERGE_COMMIT_SHA" % os.path.basename(__file__))
@@ -100,6 +109,23 @@ def diff_dtdict(dtdict_a, dtdict_b):
 
 def check_resource_contacts(rg_fname, resources_affected): #, gh_user
     pass
+
+_contact_fields = ['ID', 'FullName', 'GitHub']
+Contact = collections.namedtuple('Contact', _contact_fields)
+
+def u2contact(u):
+    return Contact(*[ u.find(field).text for field in _contact_fields ])
+
+def u2contactmap(u):
+    c = u2contact(u)
+    return c.ID, c
+
+_contacts_url = 'https://topology.opensciencegrid.org/miscuser/xml'
+def get_contacts():
+    txt = urlopen(_contacts_url).read()
+    xmltree = et.fromstring(txt)
+    users = xmltree.findall('User')
+    return dict(map(u2contactmap, users))
 
 if __name__ == '__main__':
     main(sys.argv[1:])
