@@ -96,6 +96,11 @@ def get_downtime_dict_at_version(sha, fname):
     dtlist = yaml.safe_load(txt) if txt else []
     return dict( (dt["ID"], dt) for dt in dtlist )
 
+def get_rg_resources_at_version(sha, fname):
+    txt = get_file_at_version(sha, fname)
+    rg = yaml.safe_load(txt)
+    return rg["Resources"]
+
 def diff_dtdict(dtdict_a, dtdict_b):
     def dt_changed(ID):
         return dtdict_a[ID] != dtdict_b[ID]
