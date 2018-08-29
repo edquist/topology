@@ -101,6 +101,10 @@ def get_rg_resources_at_version(sha, fname):
     rg = yaml.safe_load(txt)
     return rg["Resources"]
 
+def resource_contact_ids(res):
+    return set( contact["ID"] for ctype,cdict in res.items()
+                              for clevel,contact in cdict.items() )
+
 def diff_dtdict(dtdict_a, dtdict_b):
     def dt_changed(ID):
         return dtdict_a[ID] != dtdict_b[ID]
