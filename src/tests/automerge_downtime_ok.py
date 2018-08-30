@@ -58,8 +58,8 @@ def main(args):
 
         if resources_affected and contact:
             rg_fname = re.sub(br'_downtime.yaml$', b'.yaml', fname)
-            check_resource_contacts(BASE_SHA, rg_fname, resources_affected,
-                                    contact)
+            errors += check_resource_contacts(BASE_SHA, rg_fname,
+                                              resources_affected, contact)
 
     print_errors(errors)
     sys.exit(len(errors) > 0)
@@ -112,7 +112,8 @@ def get_rg_resources_at_version(sha, fname):
     return rg["Resources"]
 
 def resource_contact_ids(res):
-    return set( contact["ID"] for ctype in res.values()
+    clists = res["ContactLists"]
+    return set( contact["ID"] for ctype in clists.values()
                               for contact in ctype.values() )
 
 def diff_dtdict(dtdict_a, dtdict_b):
