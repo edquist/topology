@@ -102,8 +102,8 @@ def get_rg_resources_at_version(sha, fname):
     return rg["Resources"]
 
 def resource_contact_ids(res):
-    return set( contact["ID"] for ctype,cdict in res.items()
-                              for clevel,contact in cdict.items() )
+    return set( contact["ID"] for ctype in res.values()
+                              for contact in ctype.values() )
 
 def diff_dtdict(dtdict_a, dtdict_b):
     def dt_changed(ID):
