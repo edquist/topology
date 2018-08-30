@@ -16,14 +16,16 @@ import xml.etree.ElementTree as et
 
 
 def usage():
-    print("Usage: %s BASE_SHA MERGE_COMMIT_SHA" % os.path.basename(__file__))
+    print("Usage: %s BASE_SHA MERGE_COMMIT_SHA [GitHubUser]"
+                   % os.path.basename(__file__))
     sys.exit(1)
 
 def main(args):
-    insist(len(args) == 2)
+    insist(len(args) in (2,3))
     insist(looks_like_sha(args[0]))
     insist(looks_like_sha(args[1]))
-    BASE_SHA, MERGE_COMMIT_SHA = args
+
+    BASE_SHA, MERGE_COMMIT_SHA = args[:2]
     modified = get_modified_files(BASE_SHA, MERGE_COMMIT_SHA)
     errors = []
     DTs = []
@@ -32,6 +34,13 @@ def main(args):
             DTs += [fname]
         else:
             errors += ["File '%s' is not a downtime file." % fname.decode()]
+
+    if len(args) == 3:
+        contact = get_gh_contact(args[2])
+        if contact is None:
+            errors += ["No contact found for GitHub user '%s'" % args[2]]
+    else:
+        contact = None
 
     for fname in DTs:
         dtdict_base = get_downtime_dict_at_version(BASE_SHA, fname)
@@ -47,9 +56,10 @@ def main(args):
         resources_affected = set( dt["ResourceName"] for dt in dtminus ) \
                            | set( dt["ResourceName"] for dt in dtplus  )
 
-        if resources_affected:
+        if resources_affected and contact:
             rg_fname = re.sub(br'_downtime.yaml$', b'.yaml', fname)
-            check_resource_contacts(rg_fname, resources_affected)
+            check_resource_contacts(BASE_SHA, rg_fname, resources_affected,
+                                    contact)
 
     print_errors(errors)
     sys.exit(len(errors) > 0)
@@ -116,8 +126,11 @@ def diff_dtdict(dtdict_a, dtdict_b):
 
     return dt_a, dt_b
 
-def check_resource_contacts(rg_fname, resources_affected): #, gh_user
-    pass
+def check_resource_contacts(sha, rg_fname, resources_affected, contact):
+    resources = get_rg_resources_at_version(sha, rg_fname)
+    return [ "%s not associated with resource '%s'" % (contact, res)
+             for res in resources if res in resources_affected
+             if contact.ID not in resource_contact_ids(resources[res]) ]
 
 _contact_fields = ['ID', 'FullName', 'GitHub']
 Contact = collections.namedtuple('Contact', _contact_fields)
@@ -135,6 +148,11 @@ def get_contacts():
     xmltree = et.fromstring(txt)
     users = xmltree.findall('User')
     return dict(map(u2contactmap, users))
+
+def get_gh_contact(ghuser):
+    contact_map = get_contacts()
+    gh_contacts = [ c for c in contact_map.values() if c.GitHub == ghuser ]
+    return gh_contacts[0] if len(gh_contacts) == 1 else None
 
 if __name__ == '__main__':
     main(sys.argv[1:])
