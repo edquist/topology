@@ -130,7 +130,7 @@ def diff_dtdict(dtdict_a, dtdict_b):
 def check_resource_contacts(sha, rg_fname, resources_affected, contact):
     resources = get_rg_resources_at_version(sha, rg_fname)
     return [ "%s not associated with resource '%s'" % (contact, res)
-             for res in resources_affected
+             for res in resources_affected if res in resources
              if contact.ID not in resource_contact_ids(resources[res]) ]
 
 _contact_fields = ['ID', 'FullName', 'GitHub']
