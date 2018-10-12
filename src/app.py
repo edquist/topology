@@ -7,6 +7,7 @@ from flask import Flask, Response, request, render_template
 import logging
 import os
 import re
+import subprocess
 import sys
 import urllib.parse
 
@@ -55,6 +56,7 @@ if not app.config.get("SECRET_KEY"):
 
 global_data = GlobalData(app.config)
 
+src_dir = os.path.dirname(__file__)
 
 def _fix_unicode(text):
     """Convert a partial unicode string to full unicode"""
@@ -193,6 +195,70 @@ def generate_downtime():
                        edit_url=edit_url, site_dir_url=site_dir_url,
                        new_url=new_url)
 
+
+@app.route("/pull_request_hook", methods=["POST"])
+def pull_request_hook():
+    payload = request.get_json()
+    action = payload['action']
+    if action not in ("opened", "edited", "reopened"):
+        return Response("Not Interested")
+    # status=204 : No Content
+
+    event = request.headers.get('X-GitHub-Event')
+    if event == "ping":
+        return json.dumps({'msg': 'Pong'})
+    elif event != "pull_request":
+        return json.dumps({'msg': "wrong event type"})
+
+    merge_commit_sha = payload['pull_request']['merge_commit_sha']
+    head_sha         = payload['pull_request']['head']['sha']
+    head_label       = payload['pull_request']['head']['label']
+    head_ref         = payload['pull_request']['head']['ref']
+
+    base_sha         = payload['pull_request']['base']['sha']
+    base_label       = payload['pull_request']['base']['label']
+    base_ref         = payload['pull_request']['base']['ref']
+
+    sender           = payload['pull_request']['sender']['login']
+
+    pull_url         = payload['pull_request']['url']
+
+    script = src_dir + "/tests/automerge_downtime_ok.py"
+    stdout, stderr, ret = runcmd([script, base_sha, merge_commit_sha, sender])
+
+    OK = "Yes" if ret == 0 else "No"
+
+    subject = "Pull Request {pull_url} {action}".format(**locals())
+
+    out = """\
+In Pull Request: {pull_url}
+GitHub User '{sender}' wants to merge branch {head_label}
+(commit {head_sha}
+via merge {merge_commit_sha})
+into {base_label} ({base_sha})
+
+Eligible for downtime automerge? {OK}
+
+automerge_downtime script output:
+---
+{stdout}
+---
+{stderr}
+""".format(**locals())
+
+    recipients = ["edquist@cs.wisc.edu"]
+    _,_,_ = send_mailx_email(subject, recipients)
+
+    return Response(out)
+
+
+def runcmd(cmd):
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = p.communicate()
+    return stdout, stderr, p.returncode
+
+def send_mailx_email(subject, recipients):
+    return runcmd(["mailx", "-s", subject] + recipients)
 
 def _make_choices(iterable, select_one=False):
     c = [(_fix_unicode(x), _fix_unicode(x)) for x in sorted(iterable)]
