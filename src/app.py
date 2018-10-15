@@ -221,10 +221,17 @@ def pull_request_hook():
 
     sender           = payload['pull_request']['sender']['login']
 
+    pull_num         = payload['pull_request']['number']
     pull_url         = payload['pull_request']['url']
 
-    script = src_dir + "/tests/automerge_downtime_ok.py"
-    stdout, stderr, ret = runcmd([script, base_sha, merge_commit_sha, sender])
+    merge_ref        = "pull/{pull_num}/merge".format(**locals)
+
+    # make sure we have merge_commit_sha, which also implies base_sha
+    stdout,stderr,ret = runcmd(['git', 'fetch', 'origin', merge_ref])
+
+    if ret == 0:
+        script = src_dir + "/tests/automerge_downtime_ok.py"
+        stdout,stderr,ret = runcmd([script, base_sha, merge_commit_sha, sender])
 
     OK = "Yes" if ret == 0 else "No"
 
