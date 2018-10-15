@@ -8,6 +8,7 @@ import logging
 import os
 import re
 import subprocess
+from subprocess import PIPE
 import sys
 import urllib.parse
 
@@ -254,18 +255,19 @@ automerge_downtime script output:
 """.format(**locals())
 
     recipients = ["edquist@cs.wisc.edu"]
-    _,_,_ = send_mailx_email(subject, recipients)
+    _,_,_ = send_mailx_email(subject, out, recipients)
 
     return Response(out)
 
 
-def runcmd(cmd):
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, stderr = p.communicate()
+def runcmd(cmd, input=None):
+    stdin = None if input is None else PIPE
+    p = subprocess.Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=stdin)
+    stdout, stderr = p.communicate(input)
     return stdout, stderr, p.returncode
 
-def send_mailx_email(subject, recipients):
-    return runcmd(["mailx", "-s", subject] + recipients)
+def send_mailx_email(subject, body, recipients):
+    return runcmd(["mailx", "-s", subject] + recipients, input=body)
 
 def _make_choices(iterable, select_one=False):
     c = [(_fix_unicode(x), _fix_unicode(x)) for x in sorted(iterable)]
