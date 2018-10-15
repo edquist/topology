@@ -14,7 +14,7 @@ This README contains the following sections:
 - [Getting Help](#getting-help)
 
 
-Structure of the Registry
+Structure of teh Registry
 -------------------------
 
 The data is organized as files in [YAML format](https://en.wikipedia.org/wiki/YAML)
