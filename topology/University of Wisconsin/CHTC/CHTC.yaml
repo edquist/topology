@@ -239,7 +239,7 @@ Resources:
     ContactLists:
       Administrative Contact:
         Primary:
-          ID: 606b797dcc03cad7135b7cc61b78fbc15eea7ec8:
+          ID: 606b797dcc03cad7135b7cc61b78fbc15eea7ec8
           Name: Carl Edquist
         Secondary:
           ID: 3f306d87236d84ef770ddf0c34844908e2d94dfa
