@@ -210,6 +210,8 @@ def pull_request_hook():
         return Response("Not Interested")
     # status=204 : No Content
 
+    sender           = payload['sender']['login']
+
     merge_commit_sha = payload['pull_request']['merge_commit_sha']
     head_sha         = payload['pull_request']['head']['sha']
     head_label       = payload['pull_request']['head']['label']
@@ -218,8 +220,6 @@ def pull_request_hook():
     base_sha         = payload['pull_request']['base']['sha']
     base_label       = payload['pull_request']['base']['label']
     base_ref         = payload['pull_request']['base']['ref']
-
-    sender           = payload['pull_request']['sender']['login']
 
     pull_num         = payload['pull_request']['number']
     pull_url         = payload['pull_request']['url']
