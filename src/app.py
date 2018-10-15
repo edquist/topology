@@ -202,7 +202,7 @@ def pull_request_hook():
     if event == "ping":
         return Response(json.dumps({'msg': 'Pong'}))
     elif event != "pull_request":
-        return Response(json.dumps({'msg': "wrong event type"}, status=400)
+        return Response(json.dumps({'msg': "wrong event type"}, status=400))
 
     payload = request.get_json()
     action = payload['action']
