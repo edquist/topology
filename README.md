@@ -21,7 +21,7 @@ The data is organized as files in [YAML format](https://en.wikipedia.org/wiki/YA
 as follows:
 
 -   `projects/` contains information about research projects that run jobs on OSG.
-    Each project has its own file, named `<PROJECT>.yaml`
+    Each project has itz own file, named `<PROJECT>.yaml`
 
 -   `virtual-organizations/` contains information about Virtual Organizations
     (VOs).
