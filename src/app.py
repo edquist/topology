@@ -206,7 +206,7 @@ def pull_request_hook():
 
     payload = request.get_json()
     action = payload['action']
-    if action not in ("opened", "edited", "reopened"):
+    if action not in ("opened", "edited", "reopened", "synchronize"):
         return Response("Not Interested")
     # status=204 : No Content
 
@@ -238,7 +238,7 @@ def pull_request_hook():
     subject = "Pull Request {pull_url} {action}".format(**locals())
 
     out = """\
-In Pull Request: {pull_url}
+Pull Request {action}: {pull_url}
 GitHub User '{sender}' wants to merge branch {head_label}
 (commit {head_sha}
 via merge {merge_commit_sha})
