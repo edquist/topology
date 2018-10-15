@@ -1,0 +1,10 @@
+# ----------------------------------------------------------
+- Class: SCHEDULED
+  Description: power cut to the heart
+  EndTime: Mar 7, 2017 03:00 +0000
+  ID: 1005225
+  ResourceName: CHTC_MONZA_TEST
+  Services:
+  - Submit Node
+  Severity: Outage
+  StartTime: Mar 5, 2017 12:00 +0000
