@@ -261,7 +261,11 @@ automerge_downtime script output:
 
 
 def runcmd(cmd, input=None):
-    stdin = None if input is None else PIPE
+    if input is None:
+        stdin = None
+    else:
+        stdin = PIPE
+        input = input.encode('utf-8')
     p = subprocess.Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=stdin)
     stdout, stderr = p.communicate(input)
     return stdout, stderr, p.returncode
