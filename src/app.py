@@ -198,17 +198,17 @@ def generate_downtime():
 
 @app.route("/pull_request_hook", methods=["POST"])
 def pull_request_hook():
-    payload = request.get_json()
-    action = payload['action']
-    if action not in ("opened", "edited", "reopened"):
-        return Response("Not Interested")
-    # status=204 : No Content
-
     event = request.headers.get('X-GitHub-Event')
     if event == "ping":
         return json.dumps({'msg': 'Pong'})
     elif event != "pull_request":
         return json.dumps({'msg': "wrong event type"})
+
+    payload = request.get_json()
+    action = payload['action']
+    if action not in ("opened", "edited", "reopened"):
+        return Response("Not Interested")
+    # status=204 : No Content
 
     merge_commit_sha = payload['pull_request']['merge_commit_sha']
     head_sha         = payload['pull_request']['head']['sha']
