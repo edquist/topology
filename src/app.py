@@ -200,9 +200,9 @@ def generate_downtime():
 def pull_request_hook():
     event = request.headers.get('X-GitHub-Event')
     if event == "ping":
-        return Response(json.dumps({'msg': 'Pong'}))
+        return Response('Pong')
     elif event != "pull_request":
-        return Response(json.dumps({'msg': "wrong event type"}, status=400))
+        return Response("Wrong event type", status=400)
 
     payload = request.get_json()
     action = payload['action']
