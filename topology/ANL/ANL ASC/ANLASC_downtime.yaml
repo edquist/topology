@@ -20,7 +20,7 @@
   StartTime: Mar 5, 2017 12:00 +0000
 # ----------------------------------------------------------
 - Class: SCHEDULED
-  Description: power cut
+  Description: power cut to the heart
   EndTime: Mar 7, 2017 03:00 +0000
   ID: 1005225
   ResourceName: ANL-ATLAS-GRIDFTP1
