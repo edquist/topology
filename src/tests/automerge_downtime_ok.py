@@ -107,8 +107,8 @@ def get_file_at_version(sha, fname):
 
 def commit_is_merged(sha_a, sha_b):
     args = ['git', 'merge-base', '--is-ancestor', sha_a, sha_b]
-    ret, out = runcmd(args, stdout=_devnull, stderr=_devnull)
-    return out == 0
+    ret, out = runcmd(args, stderr=_devnull)
+    return ret == 0
 
 def get_downtime_dict_at_version(sha, fname):
     txt = get_file_at_version(sha, fname)
