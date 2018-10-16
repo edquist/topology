@@ -241,9 +241,9 @@ def pull_request_hook():
     out = """\
 In Pull Request: {pull_url}
 GitHub User '{sender}' wants to merge branch {head_label}
-(commit {head_sha}
-via merge {merge_commit_sha})
-into {base_label} ({base_sha})
+        (at commit {head_sha})
+into {base_label}
+        (at commit {base_sha})
 
 Eligible for downtime automerge? {OK}
 
