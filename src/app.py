@@ -213,7 +213,6 @@ def pull_request_hook():
 
     sender           = payload['sender']['login']
 
-    merge_commit_sha = payload['pull_request']['merge_commit_sha']
     head_sha         = payload['pull_request']['head']['sha']
     head_label       = payload['pull_request']['head']['label']
     head_ref         = payload['pull_request']['head']['ref']
@@ -225,15 +224,14 @@ def pull_request_hook():
     pull_num         = payload['pull_request']['number']
     pull_url         = payload['pull_request']['html_url']
 
-    merge_ref        = "pull/{pull_num}/merge".format(**locals())
+    pull_ref         = "pull/{pull_num}/head".format(**locals())
 
-    # make sure data repo has merge_commit_sha, which also implies base_sha
-    stdout, stderr, ret = runcmd(['git', 'fetch', 'origin', merge_ref],
-                                 cwd=global_data.topology_data_dir)
+    # make sure data repo contains relevant commits
+    stdout, stderr, ret = fetch_data_ref(base_ref, pull_ref)
 
     if ret == 0:
         script = src_dir + "/tests/automerge_downtime_ok.py"
-        cmd = [script, base_sha, merge_commit_sha, sender]
+        cmd = [script, base_sha, head_sha, sender]
         stdout, stderr, ret = runcmd(cmd, cwd=global_data.topology_data_dir)
 
     OK = "Yes" if ret == 0 else "No"
@@ -272,6 +270,10 @@ def runcmd(cmd, input=None, **kw):
                          encoding='utf-8', **kw)
     stdout, stderr = p.communicate(input)
     return stdout, stderr, p.returncode
+
+def fetch_data_ref(*refs):
+    return runcmd(['git', 'fetch', 'origin'] + list(refs),
+                  cwd=global_data.topology_data_dir)
 
 def send_mailx_email(subject, body, recipients):
     return runcmd(["mailx", "-s", subject] + recipients, input=body)
