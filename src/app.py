@@ -232,7 +232,8 @@ def pull_request_hook():
 
     if ret == 0:
         script = src_dir + "/tests/automerge_downtime_ok.py"
-        stdout,stderr,ret = runcmd([script, base_sha, merge_commit_sha, sender])
+        cmd = [script, base_sha, merge_commit_sha, sender]
+        stdout, stderr, ret = runcmd(cmd, cwd=global_data.topology_data_dir)
 
     OK = "Yes" if ret == 0 else "No"
 
@@ -260,13 +261,13 @@ automerge_downtime script output:
     return Response(out)
 
 
-def runcmd(cmd, input=None):
+def runcmd(cmd, input=None, **kw):
     if input is None:
         stdin = None
     else:
         stdin = PIPE
         input = input.encode('utf-8')
-    p = subprocess.Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=stdin)
+    p = subprocess.Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=stdin, **kw)
     stdout, stderr = p.communicate(input)
     return stdout, stderr, p.returncode
 
