@@ -28,6 +28,9 @@ def main(args):
     BASE_SHA, MERGE_COMMIT_SHA = args[:2]
     modified = get_modified_files(BASE_SHA, MERGE_COMMIT_SHA)
     errors = []
+    if not commit_is_merged(BASE_SHA, MERGE_COMMIT_SHA):
+        errors += ["Commit %s is not merged into %s" %
+                   (BASE_SHA, MERGE_COMMIT_SHA)]
     DTs = []
     for fname in modified:
         if looks_like_downtime(fname):
@@ -100,6 +103,11 @@ def get_file_at_version(sha, fname):
     args = ['git', 'show', b'%s:%s' % (sha.encode(), fname)]
     ret, out = runcmd(args, stderr=_devnull)
     return out
+
+def commit_is_merged(sha_a, sha_b):
+    args = ['git', 'merge-base', '--is-ancestor', sha_a, sha_b]
+    ret, out = runcmd(args, stdout=_devnull, stderr=_devnull)
+    return out == 0
 
 def get_downtime_dict_at_version(sha, fname):
     txt = get_file_at_version(sha, fname)
