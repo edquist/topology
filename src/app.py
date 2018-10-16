@@ -57,7 +57,7 @@ if not app.config.get("SECRET_KEY"):
 
 global_data = GlobalData(app.config)
 
-src_dir = os.path.dirname(__file__)
+src_dir = os.path.abspath(os.path.dirname(__file__))
 
 def _fix_unicode(text):
     """Convert a partial unicode string to full unicode"""
