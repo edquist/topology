@@ -268,8 +268,8 @@ def runcmd(cmd, input=None, **kw):
         stdin = None
     else:
         stdin = PIPE
-        input = input.encode('utf-8')
-    p = subprocess.Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=stdin, **kw)
+    p = subprocess.Popen(cmd, stdout=PIPE, stderr=PIPE, stdin=stdin,
+                         encoding='utf-8', **kw)
     stdout, stderr = p.communicate(input)
     return stdout, stderr, p.returncode
 
