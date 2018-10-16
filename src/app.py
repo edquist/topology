@@ -227,8 +227,9 @@ def pull_request_hook():
 
     merge_ref        = "pull/{pull_num}/merge".format(**locals())
 
-    # make sure we have merge_commit_sha, which also implies base_sha
-    stdout,stderr,ret = runcmd(['git', 'fetch', 'origin', merge_ref])
+    # make sure data repo has merge_commit_sha, which also implies base_sha
+    stdout,stderr,ret = runcmd(['git', 'fetch', 'origin', merge_ref],
+                               cwd=global_data.topology_data_dir)
 
     if ret == 0:
         script = src_dir + "/tests/automerge_downtime_ok.py"
