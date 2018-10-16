@@ -21,7 +21,6 @@ def usage():
     sys.exit(1)
 
 def main(args):
-    os.chdir(os.path.dirname(__file__))
     insist(len(args) in (2,3))
     insist(looks_like_sha(args[0]))
     insist(looks_like_sha(args[1]))
