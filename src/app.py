@@ -223,7 +223,7 @@ def pull_request_hook():
     base_ref         = payload['pull_request']['base']['ref']
 
     pull_num         = payload['pull_request']['number']
-    pull_url         = payload['pull_request']['url']
+    pull_url         = payload['pull_request']['html_url']
 
     merge_ref        = "pull/{pull_num}/merge".format(**locals())
 
@@ -240,7 +240,7 @@ def pull_request_hook():
     subject = "Pull Request {pull_url} {action}".format(**locals())
 
     out = """\
-Pull Request {action}: {pull_url}
+In Pull Request: {pull_url}
 GitHub User '{sender}' wants to merge branch {head_label}
 (commit {head_sha}
 via merge {merge_commit_sha})
@@ -253,6 +253,7 @@ automerge_downtime script output:
 {stdout}
 ---
 {stderr}
+---
 """.format(**locals())
 
     recipients = ["edquist@cs.wisc.edu"]
