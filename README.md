@@ -14,14 +14,14 @@ This README contains the following sections:
 - [Getting Help](#getting-help)
 
 
-Structure of teh Registry
+Structure of the Registry
 -------------------------
 
 The data is organized as files in [YAML format](https://en.wikipedia.org/wiki/YAML)
 as follows:
 
 -   `projects/` contains information about research projects that run jobs on OSG.
-    Each project has itz own file, named `<PROJECT>.yaml`
+    Each project has its own file, named `<PROJECT>.yaml`
 
 -   `virtual-organizations/` contains information about Virtual Organizations
     (VOs).
