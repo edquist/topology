@@ -157,11 +157,11 @@ def get_contacts():
     txt = urlopen(_contacts_url).read()
     xmltree = et.fromstring(txt)
     users = xmltree.findall('User')
-    return dict(map(u2contactmap, users))
+    return list(map(u2contact, users))
 
 def get_gh_contact(ghuser):
-    contact_map = get_contacts()
-    gh_contacts = [ c for c in contact_map.values() if c.GitHub == ghuser ]
+    contact_list = get_contacts()
+    gh_contacts = [ c for c in contact_list if c.GitHub == ghuser ]
     return gh_contacts[0] if len(gh_contacts) == 1 else None
 
 if __name__ == '__main__':
