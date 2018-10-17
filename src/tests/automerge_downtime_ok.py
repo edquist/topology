@@ -24,7 +24,6 @@ def main(args):
     insist(len(args) in (2,3))
     insist(looks_like_sha(args[0]))
     insist(looks_like_sha(args[1]))
-    print("Running from: %s" % os.getcwd())
 
     BASE_SHA, MERGE_COMMIT_SHA = args[:2]
     modified = get_modified_files(BASE_SHA, MERGE_COMMIT_SHA)
