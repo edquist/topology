@@ -147,10 +147,6 @@ Contact = collections.namedtuple('Contact', _contact_fields)
 def u2contact(u):
     return Contact(*[ u.find(field).text for field in _contact_fields ])
 
-def u2contactmap(u):
-    c = u2contact(u)
-    return c.ID, c
-
 _contacts_url = 'https://topology.opensciencegrid.org/miscuser/xml'
 def get_contacts():
     txt = urlopen(_contacts_url).read()
