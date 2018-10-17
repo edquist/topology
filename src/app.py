@@ -211,20 +211,20 @@ def pull_request_hook():
         return Response("Not Interested")
     # status=204 : No Content
 
-    sender           = payload['sender']['login']
+    sender     = payload['sender']['login']
 
-    head_sha         = payload['pull_request']['head']['sha']
-    head_label       = payload['pull_request']['head']['label']
-    head_ref         = payload['pull_request']['head']['ref']
+    head_sha   = payload['pull_request']['head']['sha']
+    head_label = payload['pull_request']['head']['label']
+    head_ref   = payload['pull_request']['head']['ref']
 
-    base_sha         = payload['pull_request']['base']['sha']
-    base_label       = payload['pull_request']['base']['label']
-    base_ref         = payload['pull_request']['base']['ref']
+    base_sha   = payload['pull_request']['base']['sha']
+    base_label = payload['pull_request']['base']['label']
+    base_ref   = payload['pull_request']['base']['ref']
 
-    pull_num         = payload['pull_request']['number']
-    pull_url         = payload['pull_request']['html_url']
+    pull_num   = payload['pull_request']['number']
+    pull_url   = payload['pull_request']['html_url']
 
-    pull_ref         = "pull/{pull_num}/head".format(**locals())
+    pull_ref   = "pull/{pull_num}/head".format(**locals())
 
     # make sure data repo contains relevant commits
     stdout, stderr, ret = fetch_data_ref(base_ref, pull_ref)
