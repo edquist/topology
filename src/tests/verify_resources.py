@@ -84,12 +84,12 @@ def main():
     errors += test_5_sc(rgs, rgfns)
     errors += test_6_site()
     errors += test_8_res_ids(rgs, rgfns)
-    errors += test_9_res_contact_lists(rgs, rgfns):
-    errors += test_10_res_admin_contact(rgs, rgfns):
-    errors += test_11_res_sec_contact(rgs, rgfns):
-    errors += test_12_res_contact_id_fmt(rgs, rgfns):
-    errors += test_13_res_contacts_exist(rgs, rgfns, contacts):
-    errors += test_14_res_contacts_match(rgs, rgfns, contacts):
+    errors += test_9_res_contact_lists(rgs, rgfns)
+    errors += test_10_res_admin_contact(rgs, rgfns)
+    errors += test_11_res_sec_contact(rgs, rgfns)
+    errors += test_12_res_contact_id_fmt(rgs, rgfns)
+    errors += test_13_res_contacts_exist(rgs, rgfns, contacts)
+    errors += test_14_res_contacts_match(rgs, rgfns, contacts)
 
 
     print("%d Resource Group files processed." % len(rgs))
