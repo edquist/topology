@@ -4,6 +4,9 @@ TOPOLOGY_DATA_DIR = "/tmp/topology/topology"
 TOPOLOGY_DATA_REPO = "https://github.com/opensciencegrid/topology"
 TOPOLOGY_DATA_BRANCH = "master"
 
+WEBHOOK_DATA_DIR = "/tmp/topology/topology"
+WEBHOOK_DATA_REPO = "https://github.com/opensciencegrid/topology"
+
 CONTACT_DATA_DIR = "/tmp/topology/contact"
 CONTACT_DATA_REPO = "git@bitbucket.org:opensciencegrid/contact.git"
 CONTACT_DATA_BRANCH = "master"
