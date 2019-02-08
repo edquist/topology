@@ -3,14 +3,14 @@ Application File
 """
 import flask
 import flask.logging
-from flask import Flask, Response, request
+from   flask import Flask, Response, request
 import glob
 import hmac
 import logging
 import os
 import re
 import subprocess
-from subprocess import PIPE
+from   subprocess import PIPE
 import sys
 
 from webapp import default_config
