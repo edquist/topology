@@ -55,7 +55,7 @@ def publish_pr_review(owner, repo, num, body, action, sha):
     resp = github_api_call('POST', url, data)
     return resp  # 200 OK
 
-def hit_merge_button(owner, repo, num, sha=None, title=None, msg=None, method=None)
+def hit_merge_button(owner, repo, num, sha, title=None, msg=None, method=None):
     api_path = "/repos/:owner/:repo/pulls/:number/merge"
     url = github_api_path2url(api_path, owner=owner, repo=repo, number=num)
     data = {}
