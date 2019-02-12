@@ -90,14 +90,14 @@ class GitHubRepoAPI:
         self.repo = repo
 
     def publish_issue_comment(self, num, body):
-        return ghauth.publish_issue_comment(self.owner, self.repo, num, body)
+        return self.ghauth.publish_issue_comment(self.owner, self.repo,
+                                                 num, body)
 
     def publish_pr_review(self, num, body, action, sha):
-        return ghauth.publish_pr_review(self.owner, self.repo,
+        return self.ghauth.publish_pr_review(self.owner, self.repo,
                                         num, body, action, sha)
 
     def hit_merge_button(self, num, sha, title=None, msg=None):
-        return ghauth.hit_merge_button(self.owner, self.repo,
+        return self.ghauth.hit_merge_button(self.owner, self.repo,
                                        num, sha, title, msg)
-
 
