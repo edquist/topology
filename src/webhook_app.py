@@ -75,7 +75,7 @@ if not webhook_secret:
 gh_api_user = global_data.webhook_gh_api_user
 gh_api_token = _readfile(global_data.webhook_gh_api_token)
 if gh_api_user and gh_api_token:
-    ghauth = GitHubAuth(gh_api_user, gh_api_token, api.logger)
+    ghauth = GitHubAuth(gh_api_user, gh_api_token, app.logger)
     ghrepo = ghauth.target_repo(_required_repo_owner, _required_repo_name)
     publish_pr_review     = ghrepo.publish_pr_review
     publish_issue_comment = ghrepo.publish_issue_comment
